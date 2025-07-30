@@ -8,6 +8,7 @@ const {
   updateAppointmentStatus,
   calculateDoctorIncome,
   AllUsersData,
+  doctorDashboardData,
 } = require("../controllers/appointment.controller");
 const router = express.Router();
 
@@ -59,9 +60,9 @@ router.post("/update", async (req, res) => {
   }
 });
 
-router.get("/allData", async (req, res) => {
+router.get("/dashboardData/:id", async (req, res) => {
   try {
-    await AllUsersData(req, res);
+    await doctorDashboardData(req, res);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -86,7 +86,7 @@ const AllUsersData = async (req, res) => {
       ],
     });
 
-    // Step 2: Get all ratings with post and doctor info
+    // Get all ratings with post and doctor info
     const ratings = await rating.findAll({
       include: [
         {
@@ -102,7 +102,7 @@ const AllUsersData = async (req, res) => {
       ],
     });
 
-    // Step 3: Group and compute stats per doctor
+    // Group and compute stats per doctor
     const doctorMap = new Map();
 
     appointments.forEach((appt) => {
@@ -165,7 +165,6 @@ const AllUsersData = async (req, res) => {
       };
     });
 
-    // ✅ Step 6: Calculate total revenue and completed appointments
     const totalRevenue = doctorStats.reduce(
       (sum, doctor) => sum + doctor.totalIncome,
       0
@@ -324,6 +323,65 @@ const getAppointmentsByPatientId = async (req, res) => {
   }
 };
 
+const doctorDashboardData = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Count of scheduled appointments
+    const totalScheduledAppointments = await appointment.count({
+      where: { status: "scheduled" },
+      include: [
+        {
+          model: post,
+          as: "post",
+          where: { doctor_id: id },
+        },
+      ],
+    });
+
+    const totalCompletedAppointments = await appointment.count({
+      where: { status: "completed" },
+      include: [
+        {
+          model: post,
+          as: "post",
+          where: { doctor_id: id },
+        },
+      ],
+    });
+
+    const completedAppointments = await appointment.findAll({
+      where: { status: "completed" },
+      include: [
+        {
+          model: post,
+          as: "post",
+          where: { doctor_id: id },
+          attributes: ["consultation_fee"],
+        },
+      ],
+    });
+
+    const totalIncome = completedAppointments.reduce((sum, appt) => {
+      const fee = Number(appt.post?.consultation_fee) || 0;
+      return sum + fee;
+    }, 0);
+
+    res.status(200).json({
+      message: "Appointments for the doctor retrieved successfully.",
+      totalScheduledAppointments,
+      totalCompletedAppointments,
+      totalIncome,
+    });
+  } catch (error) {
+    console.error("Error fetching doctor appointments:", error);
+    res.status(500).json({
+      message: "Something went wrong while fetching appointments.",
+      error: error.message,
+    });
+  }
+};
+
 const getAppointmentsByDoctorId = async (req, res) => {
   try {
     const { id: doctor_id } = req.params; // logged-in doctor ID
@@ -414,4 +472,5 @@ module.exports = {
   getAppointmentsByDoctorId,
   calculateDoctorIncome,
   AllUsersData,
+  doctorDashboardData,
 };
