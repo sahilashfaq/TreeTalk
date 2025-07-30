@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "models/*": ["models/*"],
+      "controllers/*": ["controllers/*"],
+      "migrations/*": ["migrations/*"],
+      "seeders/*": ["seeders/*"]
+    }
+  }
+}
