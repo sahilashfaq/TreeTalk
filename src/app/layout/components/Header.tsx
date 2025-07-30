@@ -13,6 +13,16 @@ export function Header() {
   const router = useRouter();
   const { user, logout } = useAuth();
 
+  const filteredMenu = MENU.filter((item) => {
+    if (user?.role === "Service Provider" && item.title === "Providers") {
+      return false;
+    }
+    if (user?.role === "Admin" && item.title === "Bookings") {
+      return false;
+    }
+    return true;
+  });
+
   return (
     <header className="bg-white shadow p-4 flex justify-between items-center">
       {/* Brand / Title */}
@@ -20,12 +30,7 @@ export function Header() {
 
       {/* Desktop Nav */}
       <nav className="hidden md:flex items-center gap-6">
-        {MENU.filter((item) => {
-          if (user?.role === "Service Provider" && item.title === "Providers") {
-            return false;
-          }
-          return true;
-        }).map((item) => {
+        {filteredMenu.map((item) => {
           const Icon = item.icon;
           return (
             <div
@@ -81,16 +86,16 @@ export function Header() {
             )}
 
             <div className="flex flex-col gap-4 mt-4">
-              {MENU.map((item) => {
+              {filteredMenu.map((item) => {
                 const Icon = item.icon;
                 return (
                   <div
                     key={item.path}
-                    className="flex items-center gap-2 text-gray-800 cursor-pointer"
+                    className="flex items-center cursor-pointer hover:text-[#ff5d2e] gap-1"
                     onClick={() => router.push(item.path)}
                   >
                     <Icon size={18} />
-                    <span>{item.title}</span>
+                    <span className="font-medium">{item.title}</span>
                   </div>
                 );
               })}

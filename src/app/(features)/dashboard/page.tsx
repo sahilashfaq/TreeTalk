@@ -11,6 +11,7 @@ import { ROUTES } from "@/app/constants";
 import AddService from "./components/Doctor/DoctorDashboard";
 import DoctorDashboardContent from "./components/Doctor/DashboardContent";
 import AdminDashboard from "./components/Admin/AdminDashboard";
+import CustomerDashboardContent from "./components/Customer/CustomerDashboard";
 
 type User = {
   id: number;
@@ -73,26 +74,7 @@ export default function Dashboard() {
       )}
 
       {/* ==== CUSTOMER DASHBOARD ==== */}
-      {role === "Customer" && (
-        <div className="space-y-4">
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-muted-foreground">Upcoming Bookings</p>
-              {dummyData.upcoming.length === 0 ? (
-                <p>No upcoming appointments</p>
-              ) : (
-                <ul className="list-disc pl-5">
-                  {dummyData.upcoming.map((appt) => (
-                    <li key={appt.id}>
-                      {appt.date} with {appt.providerName}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      )}
+      {role === "Customer" && <CustomerDashboardContent />}
     </div>
   );
 }
