@@ -68,4 +68,12 @@ router.get("/dashboardData/:id", async (req, res) => {
   }
 });
 
+router.get("/allData", async (req, res) => {
+  try {
+    await AllUsersData(req, res);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

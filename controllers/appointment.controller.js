@@ -327,54 +327,76 @@ const doctorDashboardData = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Count of scheduled appointments
-    const totalScheduledAppointments = await appointment.count({
-      where: { status: "scheduled" },
-      include: [
-        {
-          model: post,
-          as: "post",
-          where: { doctor_id: id },
-        },
-      ],
+    const checkRole = await user.findOne({
+      where: {
+        id: id,
+      },
     });
 
-    const totalCompletedAppointments = await appointment.count({
-      where: { status: "completed" },
-      include: [
-        {
-          model: post,
-          as: "post",
-          where: { doctor_id: id },
-        },
-      ],
-    });
+    if (checkRole.role === "Customer") {
+      const totalScheduledAppointments = await appointment.count({
+        where: { status: "scheduled", patient_id: id },
+      });
 
-    const completedAppointments = await appointment.findAll({
-      where: { status: "completed" },
-      include: [
-        {
-          model: post,
-          as: "post",
-          where: { doctor_id: id },
-          attributes: ["consultation_fee"],
-        },
-      ],
-    });
+      const totalCompletedAppointments = await appointment.count({
+        where: { status: "completed", patient_id: id },
+      });
 
-    const totalIncome = completedAppointments.reduce((sum, appt) => {
-      const fee = Number(appt.post?.consultation_fee) || 0;
-      return sum + fee;
-    }, 0);
+      res.status(200).json({
+        message: "Appointments for the Patient retrieved successfully.",
+        totalScheduledAppointments,
+        totalCompletedAppointments,
+      });
+    } else {
+      // Count of scheduled appointments
+      const totalScheduledAppointments = await appointment.count({
+        where: { status: "scheduled" },
+        include: [
+          {
+            model: post,
+            as: "post",
+            where: { doctor_id: id },
+          },
+        ],
+      });
 
-    res.status(200).json({
-      message: "Appointments for the doctor retrieved successfully.",
-      totalScheduledAppointments,
-      totalCompletedAppointments,
-      totalIncome,
-    });
+      const totalCompletedAppointments = await appointment.count({
+        where: { status: "completed" },
+        include: [
+          {
+            model: post,
+            as: "post",
+            where: { doctor_id: id },
+          },
+        ],
+      });
+
+      const completedAppointments = await appointment.findAll({
+        where: { status: "completed" },
+        include: [
+          {
+            model: post,
+            as: "post",
+            where: { doctor_id: id },
+            attributes: ["consultation_fee"],
+          },
+        ],
+      });
+
+      const totalIncome = completedAppointments.reduce((sum, appt) => {
+        const fee = Number(appt.post?.consultation_fee) || 0;
+        return sum + fee;
+      }, 0);
+
+      res.status(200).json({
+        message: "Appointments for the doctor retrieved successfully.",
+        totalScheduledAppointments,
+        totalCompletedAppointments,
+        totalIncome,
+      });
+    }
   } catch (error) {
-    console.error("Error fetching doctor appointments:", error);
+    console.error("Error fetching  appointments:", error);
     res.status(500).json({
       message: "Something went wrong while fetching appointments.",
       error: error.message,
