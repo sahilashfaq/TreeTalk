@@ -20,7 +20,12 @@ export function Header() {
 
       {/* Desktop Nav */}
       <nav className="hidden md:flex items-center gap-6">
-        {MENU.map((item) => {
+        {MENU.filter((item) => {
+          if (user?.role === "Service Provider" && item.title === "Providers") {
+            return false;
+          }
+          return true;
+        }).map((item) => {
           const Icon = item.icon;
           return (
             <div

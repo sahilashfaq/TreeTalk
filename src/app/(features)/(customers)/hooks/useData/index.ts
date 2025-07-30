@@ -97,19 +97,19 @@ export const useCustomerData = () => {
     mutationFn: ({ id, status }: { id: number; status: string }) =>
       CustomerService.cancelAppointment({ id, status }),
     onSuccess: () => {
-      showToast({
-        message: "Success",
-        description: "Appointment status updated successfully",
-        variant: "success",
-      });
+      // showToast({
+      //   message: "Success",
+      //   description: "Appointment status updated successfully",
+      //   variant: "success",
+      // });
       queryClient.invalidateQueries({ queryKey: ["appointmentsByPatientId"] });
     },
     onError: (error: any) => {
-      showToast({
-        message: "Error",
-        description: error?.message || "Something went wrong",
-        variant: "error",
-      });
+      // showToast({
+      //   message: "Error",
+      //   description: error?.message || "Something went wrong",
+      //   variant: "error",
+      // });
     },
   });
 

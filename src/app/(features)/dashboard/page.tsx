@@ -24,6 +24,7 @@ export default function Dashboard() {
   // const [currentUser, setCurrentUser] = useState<User | null>(null);
   const router = useRouter();
   const { user } = useAuth();
+  const [addService, setAddService] = useState(false);
   const dummyData = {
     totalBookings: 148,
     revenue: 87000,
@@ -62,7 +63,11 @@ export default function Dashboard() {
       {/* ==== SERVICE PROVIDER DASHBOARD ==== */}
       {role === "Service Provider" && (
         <>
-          <AddService />
+          <Button onClick={() => setAddService(!addService)}>
+            {addService ? "Cancel" : "Add Service"}
+          </Button>
+          {addService && <AddService />}
+
           <DoctorDashboardContent />
         </>
       )}

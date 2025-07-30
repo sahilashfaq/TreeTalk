@@ -1,4 +1,5 @@
 import { CalendarDays, Users, LayoutDashboardIcon } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
 export const MENU = [
   {

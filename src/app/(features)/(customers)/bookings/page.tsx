@@ -126,52 +126,6 @@ export default function MyBookings() {
                       {booking?.status}
                     </span>
 
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="default"
-                          size="sm"
-                          disabled={
-                            booking?.status === "cancelled" ||
-                            booking?.status === "completed"
-                          }
-                        >
-                          <Trash className="w-4 h-4 mr-1" />
-                          Complete Appointment
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Rate your experience</DialogTitle>
-                        </DialogHeader>
-                        <div className="my-4">
-                          <StarRating onChange={(val) => setRating(val)} />
-                        </div>
-                        <Button
-                          className="w-full"
-                          // disabled={rating === 0}
-
-                          onClick={() => {
-                            if (!booking?.id) return;
-                            cancelMutation.mutate({
-                              id: booking.id,
-                              status: "completed",
-                            });
-                            giveRating.mutate({
-                              currentUserId: user?.id!,
-                              post_id: booking?.post_id,
-                              rating,
-                            });
-                          }}
-                          // onClick={() => {
-                          //   completeMutation.mutate({ id: booking.id, rating });
-                          // }}
-                        >
-                          Submit & Complete
-                        </Button>
-                      </DialogContent>
-                    </Dialog>
-
                     <div className="flex gap-2">
                       {/* Reschedule */}
                       <Popover>
@@ -253,6 +207,51 @@ export default function MyBookings() {
                       </AlertDialog>
                     </div>
                   </div>
+
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="default"
+                        className="mt-4"
+                        size="sm"
+                        disabled={
+                          booking?.status === "cancelled" ||
+                          booking?.status === "completed"
+                        }
+                      >
+                        Complete Appointment
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Rate your experience</DialogTitle>
+                      </DialogHeader>
+                      <div className="my-4 text-center">
+                        <StarRating onChange={(val) => setRating(val)} />
+                      </div>
+                      <Button
+                        className="w-full"
+                        disabled={rating === 0}
+                        onClick={() => {
+                          if (!booking?.id) return;
+                          cancelMutation.mutate({
+                            id: booking.id,
+                            status: "completed",
+                          });
+                          giveRating.mutate({
+                            currentUserId: user?.id!,
+                            post_id: booking?.post_id,
+                            rating,
+                          });
+                        }}
+                        // onClick={() => {
+                        //   completeMutation.mutate({ id: booking.id, rating });
+                        // }}
+                      >
+                        Submit & Complete
+                      </Button>
+                    </DialogContent>
+                  </Dialog>
                 </CardContent>
               </Card>
             ))}

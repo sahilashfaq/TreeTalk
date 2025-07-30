@@ -10,7 +10,6 @@ import { useData } from "../../hooks/useData";
 
 export default function AddService() {
   const {
-    submitDoctor,
     register,
     errors,
     onSubmit,
