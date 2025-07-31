@@ -18,7 +18,7 @@ app.use(
 );
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/post", postRouter);
+app.use("/api/v1/post", postRouter); // For Doctor's Services
 app.use("/api/v1/rating", ratingRouter);
 app.use("/api/v1/appointment", appointmentRouter);
 
