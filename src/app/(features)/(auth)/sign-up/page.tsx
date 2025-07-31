@@ -21,19 +21,17 @@ import PasswordInput from "@/app/components/Inputs/PasswordInput";
 import { ROUTES } from "@/app/constants";
 import { showToast } from "@/app/components/Popups/Sonnet";
 
-// 1. Zod schema
 const schema = z.object({
   username: z.string().min(2, "Username is too short"),
   email: z.string().email("Enter a valid email"),
   password: z.string().min(6, "Minimum 6 characters"),
-  role: z.enum(["Admin", "Service Provider", "Customer"], {
+  role: z.enum(["Service Provider", "Customer"], {
     errorMap: () => ({ message: "Select a role" }),
   }),
 });
 
 type FormData = z.infer<typeof schema>;
 
-// 2. API call function
 const registerUser = async (formData: FormData) => {
   const response = await axios.post(
     "http://localhost:3002/api/v1/auth/register",
@@ -133,7 +131,7 @@ export default function SignUpPage() {
                 <SelectValue placeholder="Select Role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Admin">Admin</SelectItem>
+                {/* <SelectItem value="Admin">Admin</SelectItem> */}
                 <SelectItem value="Service Provider">
                   Service Provider
                 </SelectItem>

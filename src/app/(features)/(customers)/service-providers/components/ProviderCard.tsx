@@ -88,14 +88,13 @@ export default function ProviderCard({ provider }: ProviderCardProps) {
           Available Slot: {provider.nextAvailable}
         </div>
 
-        <div className="flex flex-col gap-2 pt-2">
-          <Button
-            onClick={() => bookAppointment()}
-            disabled={isPending || user?.role === "Admin"}
-          >
-            {isPending ? "Booking..." : "Book Appointment"}
-          </Button>
-        </div>
+        {user?.role !== "Admin" && (
+          <div className="flex flex-col gap-2 pt-2">
+            <Button onClick={() => bookAppointment()} disabled={isPending}>
+              {isPending ? "Booking..." : "Book Appointment"}
+            </Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

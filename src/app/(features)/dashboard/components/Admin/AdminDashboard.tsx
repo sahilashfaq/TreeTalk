@@ -16,7 +16,7 @@ export default function AdminDashboard() {
     queryKey: ["admin-stats"],
     queryFn: async () => {
       const res = await fetch(
-        "http://localhost:3002/api/v1/appointment/allData"
+        `http://localhost:3002/api/v1/appointment/allData`
       );
       if (!res.ok) throw new Error("Failed to fetch stats");
       return res.json();
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
                 <TableRow key={doctor.doctorId}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{doctor.email}</TableCell>
-                  <TableCell>Rs. {doctor.totalIncome}</TableCell>
+                  <TableCell>$. {doctor.totalIncome}</TableCell>
                   <TableCell>{doctor.completedCount}</TableCell>
                   <TableCell>{doctor.scheduledCount}</TableCell>
                   <TableCell>{doctor.averageRating} ⭐</TableCell>
