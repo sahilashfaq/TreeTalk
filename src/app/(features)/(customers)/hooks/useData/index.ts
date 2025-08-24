@@ -53,7 +53,7 @@ export const useCustomerData = () => {
     const formattedDate = format(selectedDate, "PPP");
 
     const payload = {
-      doctor_id: user?.id!,
+      doctor_id: user?._id!,
       specialization: data.specialization,
       consultation_fee: data.consultation_fee,
       availability: formattedDate,
@@ -64,10 +64,10 @@ export const useCustomerData = () => {
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ["appointmentsByPatientId", user?.id], // Unique cache key
+    queryKey: ["appointmentsByPatientId", user?._id], // Unique cache key
     queryFn: () =>
-      CustomerService.getAppointmentsById({ patient_id: user?.id! }),
-    enabled: !!user?.id,
+      CustomerService.getAppointmentsById({ patient_id: user?._id! }),
+    enabled: !!user?._id,
   });
 
   const rescheduleMutation = useMutation({
@@ -81,9 +81,9 @@ export const useCustomerData = () => {
       });
 
       //  Invalidate query to refetch updated appointments
-      if (user?.id) {
+      if (user?._id) {
         queryClient.invalidateQueries({
-          queryKey: ["appointmentsByPatientId", user.id],
+          queryKey: ["appointmentsByPatientId", user._id],
         });
       }
       setRescheduleDate(undefined);

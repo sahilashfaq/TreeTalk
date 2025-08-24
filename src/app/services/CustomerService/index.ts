@@ -1,6 +1,6 @@
 // services/customer.service.ts
 type Provider = {
-  id: number;
+  _id: number;
   name: string;
   specialization: string;
   consultation_fee: string;
@@ -38,7 +38,9 @@ type GetAppointmentsResponse = {
 
 class Customer {
   async getAllProviders(): Promise<Provider[]> {
-    const res = await fetch("http://localhost:3002/api/v1/post/getAllPosts");
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/service/getAll`
+    );
 
     const json = await res.json();
 
@@ -46,32 +48,44 @@ class Customer {
       throw new Error(json.message || "Failed to fetch providers");
     }
 
-    return json.posts;
+    return json;
   }
 
   async bookAppointment({
-    post_id,
+    service_id,
     patient_id,
     appointment_date,
     appointment_time,
   }: {
-    post_id: number;
-    patient_id: number;
+    service_id: any;
+    patient_id: any;
     appointment_date: string;
     appointment_time: string;
   }): Promise<{ message: string }> {
-    const res = await fetch("http://localhost:3002/api/v1/appointment/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        post_id,
-        patient_id,
-        appointment_date,
-        appointment_time,
-      }),
-    });
+    console.log(
+      "service_id",
+      service_id,
+      "patient_id",
+      patient_id,
+      "appointment_date",
+      appointment_date
+    );
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/bookings/add`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          service_id,
+          patient_id,
+          appointment_date,
+          appointment_time,
+        }),
+      }
+    );
 
     const json = await res.json();
 
@@ -88,7 +102,7 @@ class Customer {
     patient_id: number;
   }): Promise<any> {
     const res = await fetch(
-      `http://localhost:3002/api/v1/appointment/getAllAppointments/${patient_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/bookings/getUserBookings/${patient_id}`,
       {
         method: "GET",
         headers: {

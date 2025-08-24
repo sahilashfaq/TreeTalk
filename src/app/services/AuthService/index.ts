@@ -2,11 +2,14 @@
 
 class Auth {
   async login(payload: { email: string; password: string }) {
-    const response = await fetch("http://localhost:3002/api/v1/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -17,11 +20,14 @@ class Auth {
   }
 
   async register(payload: { email: string; password: string }) {
-    const response = await fetch("http://localhost:3002/api/v1/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/auth/register`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json();

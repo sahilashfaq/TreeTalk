@@ -19,7 +19,7 @@ export const useAuth = () => {
     setUser,
     logout,
     isAdmin: user?.role === "Admin",
-    isProvider: user?.role === "Service Provider",
-    isCustomer: user?.role === "Customer",
+    isProvider: user?.role === "Doctor",
+    isCustomer: user?.role === "Patient",
   };
 };

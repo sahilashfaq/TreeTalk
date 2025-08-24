@@ -2,10 +2,10 @@
 import { create } from "zustand";
 
 export type User = {
-  id: number;
+  _id: any;
   username: string;
   email: string;
-  role: "Admin" | "Service Provider" | "Customer";
+  role: "Admin" | "Doctor" | "Patient";
 };
 
 type AuthState = {

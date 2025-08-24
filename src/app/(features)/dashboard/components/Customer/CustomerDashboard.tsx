@@ -4,12 +4,8 @@ import { useAuth } from "@/app/hooks/useAuth";
 import { Card, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 
-const base_url = "http://localhost:3002"; // Replace with actual URL
-
 async function fetchCustomerDashboardData(userId: number) {
-  const res = await fetch(
-    `${base_url}/api/v1/appointment/dashboardData/${userId}`
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/service/getAll`);
   const data = await res.json();
 
   if (!res.ok) {

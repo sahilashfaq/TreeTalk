@@ -8,7 +8,7 @@ import { showToast } from "@/app/components/Popups/Sonnet";
 
 type ProviderCardProps = {
   provider: {
-    id: number;
+    _id: any;
     name: string;
     specialization: string;
     consultation_fee: string;
@@ -24,12 +24,13 @@ type ProviderCardProps = {
 
 export default function ProviderCard({ provider }: ProviderCardProps) {
   const { user } = useAuth();
+  console.log("Provider data", provider);
 
   const { mutate: bookAppointment, isPending } = useMutation({
     mutationFn: () =>
       CustomerService.bookAppointment({
-        post_id: provider.id,
-        patient_id: user?.id!,
+        service_id: provider._id,
+        patient_id: user?._id!,
         appointment_date: provider.availability,
         appointment_time: provider.nextAvailable,
       }),
@@ -57,10 +58,7 @@ export default function ProviderCard({ provider }: ProviderCardProps) {
             <span className="text-2xl">👨‍⚕️</span>
           </div>
           <div className="flex-1">
-            <h2 className="text-lg font-bold">
-              {" "}
-              {provider?.id} | {provider?.doctor?.username}
-            </h2>
+            <h2 className="text-lg font-bold"> {provider?.doctor?.username}</h2>
             <p className="text-sm text-gray-500">{provider.specialization}</p>
           </div>
         </div>

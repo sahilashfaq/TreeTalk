@@ -17,7 +17,7 @@ type User = {
   id: number;
   username: string;
   email: string;
-  role: "Admin" | "Service Provider" | "Customer";
+  role: "Admin" | "Doctor" | "Patient";
   createdAt: string;
 };
 
@@ -59,22 +59,22 @@ export default function Dashboard() {
       <Typography variant="h2">Role: {role}</Typography>
 
       {/* ==== ADMIN DASHBOARD ==== */}
-      {role === "Admin" && <AdminDashboard />}
+      {/* {role === "Admin" && <AdminDashboard />} */}
 
       {/* ==== SERVICE PROVIDER DASHBOARD ==== */}
-      {role === "Service Provider" && (
-        <>
-          <Button onClick={() => setAddService(!addService)}>
-            {addService ? "Cancel" : "Add Service"}
-          </Button>
-          {addService && <AddService />}
+      {/* {role === "Service Provider" && ( */}
+      <>
+        <Button onClick={() => setAddService(!addService)}>
+          {addService ? "Cancel" : "Add Service"}
+        </Button>
+        {addService && <AddService />}
 
-          <DoctorDashboardContent />
-        </>
-      )}
+        <DoctorDashboardContent />
+      </>
+      {/* )} */}
 
       {/* ==== CUSTOMER DASHBOARD ==== */}
-      {role === "Customer" && <CustomerDashboardContent />}
+      {role === "Patient" && <CustomerDashboardContent />}
     </div>
   );
 }

@@ -55,12 +55,10 @@ export default function MyBookings() {
   } = useCustomerData();
   const [rating, setRating] = useState(0);
 
-  const scheduledBookings = data?.appointments?.filter(
+  const scheduledBookings = data?.data?.filter(
     (b: any) => b.status === "scheduled"
   );
-  const pastBookings = data?.appointments?.filter(
-    (b: any) => b.status === "completed"
-  );
+  const pastBookings = data?.data?.filter((b: any) => b.status === "completed");
 
   const renderBookings = (bookings: any[]) => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -141,7 +139,7 @@ export default function MyBookings() {
                       className="w-full"
                       disabled={!rescheduleDate}
                       onClick={() => {
-                        if (!rescheduleDate || !user?.id) return;
+                        if (!rescheduleDate || !user?._id) return;
                         const formattedDate = format(
                           rescheduleDate,
                           "MMMM do, yyyy"
@@ -228,7 +226,7 @@ export default function MyBookings() {
                       status: "completed",
                     });
                     giveRating.mutate({
-                      currentUserId: user?.id!,
+                      currentUserId: user?._id!,
                       post_id: booking?.post_id,
                       rating,
                     });

@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import CustomerService from "@/app/services/CustomerService";
 
 type Provider = {
-  id: number;
+  _id: any;
   name: string;
   specialization: string;
   consultation_fee: string;
@@ -51,15 +51,15 @@ export default function ProvidersList() {
 
         {data?.map((provider) => (
           <ProviderCard
-            key={provider.id}
+            key={provider._id}
             provider={{
-              id: provider.id,
+              _id: provider._id,
               name: provider.name,
               specialization: provider.specialization,
               consultation_fee: provider.consultation_fee,
               availability: provider.availability,
               nextAvailable: provider.next_slot,
-              doctor: provider.doctor, // now matches the expected type
+              doctor: provider.doctor,
             }}
           />
         ))}

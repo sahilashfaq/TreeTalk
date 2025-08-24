@@ -25,7 +25,7 @@ const schema = z.object({
   username: z.string().min(2, "Username is too short"),
   email: z.string().email("Enter a valid email"),
   password: z.string().min(6, "Minimum 6 characters"),
-  role: z.enum(["Service Provider", "Customer"], {
+  role: z.enum(["Doctor", "Patient"], {
     errorMap: () => ({ message: "Select a role" }),
   }),
 });
@@ -34,7 +34,7 @@ type FormData = z.infer<typeof schema>;
 
 const registerUser = async (formData: FormData) => {
   const response = await axios.post(
-    "http://localhost:3002/api/v1/auth/register",
+    `${process.env.NEXT_PUBLIC_BASE_URL}/auth/register`,
     formData
   );
 
@@ -132,10 +132,8 @@ export default function SignUpPage() {
               </SelectTrigger>
               <SelectContent>
                 {/* <SelectItem value="Admin">Admin</SelectItem> */}
-                <SelectItem value="Service Provider">
-                  Service Provider
-                </SelectItem>
-                <SelectItem value="Customer">Customer</SelectItem>
+                <SelectItem value="Doctor">Doctor</SelectItem>
+                <SelectItem value="Patient">Patient</SelectItem>
               </SelectContent>
             </Select>
             {errors.role && (

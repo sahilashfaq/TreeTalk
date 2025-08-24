@@ -8,13 +8,16 @@ class Doctor {
     availability: string;
     next_slot: string;
   }) {
-    const response = await fetch("http://localhost:3002/api/v1/post/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/service/add`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
