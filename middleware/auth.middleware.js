@@ -1,20 +1,21 @@
-// middleware/auth.middleware.js
 const jwt = require("jsonwebtoken");
+const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
-const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1]; // Bearer <token>
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
-  if (!token) return res.status(401).json({ message: "Token missing" });
+  if (!authHeader || !authHeader.startsWith("Bearer "))
+    return res.status(401).json({ message: "Unauthorized" });
+
+  const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded token", process.env.JWT_SECRET);
-
-    req.user = decoded; // Attach user data to request
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded; // user info will be available in req.user
     next();
-  } catch {
-    res.status(401).json({ message: "Invalid or expired token" });
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid token" });
   }
 };
 
-module.exports = verifyToken;
+module.exports = authMiddleware;
