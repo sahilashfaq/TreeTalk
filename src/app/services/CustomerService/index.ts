@@ -62,15 +62,6 @@ class Customer {
     appointment_date: string;
     appointment_time: string;
   }): Promise<{ message: string }> {
-    console.log(
-      "service_id",
-      service_id,
-      "patient_id",
-      patient_id,
-      "appointment_date",
-      appointment_date
-    );
-
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/bookings/add`,
       {

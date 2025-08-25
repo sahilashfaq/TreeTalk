@@ -55,6 +55,8 @@ export default function MyBookings() {
   } = useCustomerData();
   const [rating, setRating] = useState(0);
 
+  console.log("check this: ", data);
+
   const scheduledBookings = data?.data?.filter(
     (b: any) => b.status === "scheduled"
   );
@@ -70,7 +72,7 @@ export default function MyBookings() {
           <CardContent className="p-6 flex flex-col justify-between h-full">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                Id: {booking?.id}
+                Id: {booking?.doctorDetails?._id}
                 {booking?.status === "scheduled" ? (
                   <CheckCircle className="text-green-500 w-5 h-5" />
                 ) : (
@@ -94,10 +96,10 @@ export default function MyBookings() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  {booking?.post?.doctor?.email}
+                  {booking?.doctorDetails?.email}
                 </div>
                 <div className="text-blue-600 font-semibold mt-2">
-                  Consultation Fee: ${booking?.post?.consultation_fee}
+                  Consultation Fee: ${booking?.serviceDetails?.consultation_fee}
                 </div>
               </div>
             </div>
