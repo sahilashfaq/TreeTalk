@@ -1,5 +1,7 @@
 const Booking = require("../models/booking");
 const express = require("express");
+const Service = require("../models/service");
+const User = require("../models/user");
 const router = express.Router();
 
 router.post("/add", async (req, res) => {
@@ -39,6 +41,7 @@ router.post("/add", async (req, res) => {
       appointment_date: newBooking.appointment_date,
       appointment_time: newBooking.appointment_time,
       status: newBooking.status,
+      serviceDetails,
       createdAt: newBooking.createdAt,
       updatedAt: newBooking.updatedAt,
     };
@@ -80,9 +83,26 @@ router.get("/getUserBookings/:id", async (req, res) => {
       });
     }
 
+    // Merge service details with each booking
+    const bookingsWithServices = await Promise.all(
+      userBookings.map(async (booking) => {
+        const serviceDetails = await Service.findById(
+          booking.service_id
+        ).lean();
+        const doctorDetails = await User.findById(
+          serviceDetails.doctor_id
+        ).lean();
+        return {
+          ...booking.toObject(),
+          serviceDetails,
+          doctorDetails,
+        };
+      })
+    );
+
     res.status(200).json({
       message: "User bookings fetched successfully",
-      data: userBookings,
+      data: bookingsWithServices,
     });
   } catch (error) {
     console.error("Error fetching user bookings:", error);
